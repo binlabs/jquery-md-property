@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>jQuery Melissa Data Property API Wrapper</title>
+	</head>
+	<body>
+		<div id="element"></div>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+		<script src="../src/jquery.md.property.js"></script>
+		<script>
+		$(function() {
+			$("#element").mdProperty({
+				title: "Property Lookup: " + Math.floor(Date.now() / 1000)
+			});
+		});
+	</script>
+	</body>
+</html>
