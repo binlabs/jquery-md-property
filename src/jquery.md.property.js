@@ -3,9 +3,16 @@
 	"use strict";
 
 		var pluginName = "mdProperty",
-				defaults = {
-				title: "Property Lookup"
-		};
+			urlLookup = "https://property.melissadata.net/v3/REST/Service.svc/doLookup",
+			urlVerify = "https://personator.melissadata.net/v3/WEB/ContactVerify/doContactVerify",
+			defaults = {
+				userId: "",
+				title: "Property Lookup",
+				addressStreet: "",
+				addressCity: "",
+				addressState: "",
+				addressZip: ""
+			};
 
 		// The actual plugin constructor
 		function Plugin ( element, options ) {
@@ -21,9 +28,28 @@
 				init: function () {
 
 				},
+				
+				verify: function() {
+					$.ajax({
+						type: "GET",
+						url: urlVerify,
+						dataType: "xml",
+						success: function(xml) {
+
+						}
+					});
+				},
+				
 				lookup: function () {
-						
-				}
+					$.ajax({
+						type: "GET",
+						url: urlLookup,
+						dataType: "xml",
+						success: function(xml) {
+
+						}
+					});
+				},
 		});
 
 		// A really lightweight plugin wrapper around the constructor,
