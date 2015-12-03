@@ -4,7 +4,7 @@ This is a work in progress, do not use.
 
 An API wrapper for the [Melissa Data Property Web service](http://wiki.melissadata.com/index.php?title=Property), used to get information about individual homes. Normally you'd need to know either Melissa Data AddressKey for a property, or the FIPS and APN for that property. With this plugin, you can simply provide just the property's address to query the Property Web service.
 
-It works by making two requests: first, the [Melissa Data Personator Web service]() is queried in Verify mode to get the AddressKey. Then, the Property Web service is queried for you automatically using the address key that was just retrieved.
+It works by making two requests: first, the [Melissa Data Personator Web service](http://wiki.melissadata.com/index.php?title=Personator) is queried in Verify mode to get the AddressKey. Then, the Property Web service is queried for you automatically using the address key that was just retrieved.
 
 Melissa Data provides a basic example on their wiki that uses JavaScript to make requests to their Property Web service, but it uses ActiveX plugins for the AJAX requests, making it useless in all but the most insecure versions of Internet Explorer.
 
