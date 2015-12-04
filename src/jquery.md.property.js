@@ -29,40 +29,51 @@
 			parameters = function(options) {
 				var params = {};
 
-				if (options.UserId !== "") {
+				if (options.userId !== "") {
 					params.userId = options.userId;
-					console.error("You must provide a User ID");
 				}
 
-				return $.param(params);
+				if (options.addressLine1 !== "") {
+					params.addressLine1 = options.addressLine1;
+				}
+
+				if (options.addressLine2 !== "") {
+					params.addressLine2 = options.addressLine2;
+				}
+
+				if (options.addressCity !== "") {
+					params.addressCity = options.addressCity;
+				}
+
+
+				if (options.addressState !== "") {
+					params.addressState = options.addressState;
+				}
+
+
+				if (options.addressPostal !== "") {
+					params.addressPostal = options.addressPostal;
+				}
+
+				return params;
 			},
 
 			verify = function(options) {
-
 				var params = parameters(options);
-
-				if (params.length) {
-					userId = [userId, params].join("?"); // Add parameters if present
-					addressLine1 = [addressLine1, params].join("?");
-					addressLine2 = [addressLine2, params].join("?");
-					addressCity = [addressCity, params].join("?");
-					addressState = [addressState, params].join("?");
-					addressPostal = [addressPostal, params].join("?");
-				}
 
 				$.get(urlVerify, {
 					t: "mdPropertyService Request",
-					id: userId,
+					id: params.userId,
 					act: "Check",
 					//cols: "",
 					//opt: "",
 					//full: "",
 					//comp: "",
-					a1: addressLine1,
-					a2: addressLine2,
-					city: addressCity,
-					state: addressState,
-					postal: addressPostal
+					a1: params.addressLine1,
+					a2: params.addressLine2,
+					city: params.addressCity,
+					state: params.addressState,
+					postal: params.addressPostal
 					//ctry: "",
 					//email: "",
 					//phone: "",
@@ -90,7 +101,8 @@
 				addressLine2: "", // Line 2 of the street address
 				addressCity: "", // The city the property is in
 				addressState: "", // The state the property is in
-				addressPostal: "" // The five digit postal (zip) code for the property
+				addressPostal: "", // The five digit postal (zip) code for the property
+				callback: $.noop() // function to process data object
 			},
 
 			errors: {
@@ -108,7 +120,7 @@
 
 			lookup: function(options, callback) {
 				options = prepare_options(options, callback);
-				return verify(options);
+				verify(options);
 			}
 		};
 	}());
