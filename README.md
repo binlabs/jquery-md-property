@@ -30,9 +30,9 @@ Melissa Data provides a basic example on their wiki that uses JavaScript to make
 3. Call the plugin:
 
 	```javascript
-	var xmlResults = $.mdProperty({
+	var xmlResults = $.mdPropertyService({
 		userId: "123456789",
-		addressStreet: "22382 Avenida Empresa",
+		addressLine1: "22382 Avenida Empresa",
 		addressCity: "Rancho Santa Margarita",
 		addressState: "CA",
 		addressZip: "92688"
