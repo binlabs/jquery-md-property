@@ -14,7 +14,7 @@
 		
 		// Private
 		var urlLookup = "https://property.melissadata.net/v3/REST/Service.svc/doLookup",
-				urlVerify = "https://personator.melissadata.net/v3/WEB/ContactVerify/doContactVerify";
+				urlVerify = "https://personator.melissadata.net/v3/WEB/ContactVerify/doContactVerify",
 
 			prepare_options = function(options, callback) {
 				// If only callback is passed
@@ -48,8 +48,6 @@
 			verify = function(options) {
 
 				var params = parameters(options);
-
-				url = base_url + url; // Add base prefix
 
 				if (params.length) {
 					userId = [userId, params].join("?"); // Add parameters if present
