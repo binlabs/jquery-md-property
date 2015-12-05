@@ -30,7 +30,7 @@ Melissa Data provides a basic example on their wiki that uses JavaScript to make
 3. Call the plugin:
 
 	```javascript
-	var xmlResults = $.mdPropertyService({
+	var xmlResults = $.mdPropertyService.lookup({
 		userId: "123456789",
 		addressLine1: "22382 Avenida Empresa",
 		addressCity: "Rancho Santa Margarita",

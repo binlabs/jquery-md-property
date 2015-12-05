@@ -66,11 +66,11 @@
 				return params;
 			},
 
-			verify = function(options) {
+			verifyProperty = function(options) {
 				var params = parameters(options);
 
 				$.get(urlVerify, {
-					t: "mdPropertyService Request",
+					t: "mdPropertyService Verify Request",
 					id: params.userId,
 					act: "Check",
 					//cols: "",
@@ -101,16 +101,48 @@
 				}, "text");
 			};
 
+			lookupProperty = function(options) {
+				var params = parameters(options);
+
+				$.get(urlLookup, {
+					t: "mdPropertyService Lookup Request",
+					id: params.userId,
+					AddressKey: params.addressKey,
+					FIPS: params.apn,
+					APN: params.fips
+				}, function(data) {
+					if (!data) {
+						// Exception handling for when not data is returned
+						options.callback(false, $.mdPropertyService.errors.NoDataError);
+						return;
+					}
+
+					try {
+						return options.callback(jQuery.parseXML(data));
+					} catch (e) {
+						options.callback(false, new $.mdPropertyService.errors.InvalidXML(e));
+					}
+				}, "text");
+			};
+
 		// Public
 		return {
 			defaultOptions: {
+				// General Options - used by both the verify and lookup methods
+				callback: $.noop(), // Optional function for handling data
 				userId: "", // You must supply your Melissa Data user ID
+
+				// Personator API Options - used by the verify method
 				addressLine1: "", // Line 1 of the street address
 				addressLine2: "", // Line 2 of the street address
 				addressCity: "", // The city the property is in
 				addressState: "", // The state the property is in
 				addressPostal: "", // The five digit postal (zip) code for the property
-				callback: $.noop() // function to process data object
+
+				// Property API Options - used by the lookup method
+				addressKey: "",
+				apn: "",
+				fips: ""
 			},
 
 			errors: {
@@ -128,7 +160,7 @@
 
 			lookup: function(options, callback) {
 				options = prepare_options(options, callback);
-				verify(options);
+				verifyProperty(options);
 			}
 		};
 	}());
