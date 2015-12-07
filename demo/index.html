@@ -11,7 +11,7 @@
 		var xmlResults;
 
 		function process(apiData) {
-			return $(apiData.responseXML).find("AddressKey").text();
+			$("#element").text(apiData);
 		}
 		$(document).ready(function(){
 			xmlResults = $.mdPropertyService.lookup({
@@ -20,8 +20,9 @@
 				addressLine2: "", // Line 2 of the street address
 				addressCity: "Rancho Santa Margarita", // The city the property is in
 				addressState: "CA", // The state the property is in
-				addressPostal: "92688" // The five digit postal (zip) code for the property
-			}, process);
+				addressPostal: "92688", // The five digit postal (zip) code for the property
+				callback: process
+			});
 		});
 	</script>
 	</body>

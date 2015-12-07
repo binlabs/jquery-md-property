@@ -5,10 +5,19 @@
 	$.mdPropertyService = (function() {
 		
 		// Private
-		var urlLookup = "https://property.melissadata.net/v3/REST/Service.svc/doLookup",
-				urlVerify = "https://personator.melissadata.net/v3/WEB/ContactVerify/doContactVerify",
+		var addressKey,
+				dataGlobal,
+				urlLookup = "https://property.melissadata.net/v3/REST/Service.svc/doLookup",
+				urlVerify = "https://personator.melissadata.net/v3/WEB/ContactVerify/doContactVerify";
 
-			prepare_options = function(options, callback) {
+			/**
+			 * This function combined default and user-provided options
+			 * @param {Object} Options provided by users
+			 * @param {Object} Optional user call-back
+			 * @returns {Object} Combined set of options
+			 * @private
+			 */
+			function prepare_options(options, callback) {
 				// If only callback is passed
 				if ($.isFunction(options)) {
 					options = {
@@ -24,9 +33,15 @@
 				}
 
 				return options;
-			},
+			}
 
-			parameters = function(options) {
+			/**
+			 * This function checks for user-provided options, if not provided use deafult
+			 * @param {Object} Options provided by users
+			 * @returns {Object} Final set of options
+			 * @private
+			 */
+			function parameters(options) {
 				var params = {};
 
 				if (options.userId !== "") {
@@ -58,25 +73,34 @@
 				}
 
 				return params;
-			},
+			}
 
-			processVerifyProperty = function(data) {
-				var options = {
-					addressKey: $(data.responseXML).find("AddressKey").text()
-				};
-				return lookupProperty(options);
-			},
+			/**
+			 * This function finds the AddressKey in the Melissa Data XML
+			 * @param {Object} XML document from $.ajax
+			 * @returns {string} AddressKey
+			 * @private
+			 */
+			function findAddressKey(data) {
+				console.group("findAddressKey");
+				console.log(data);
+				console.log($(data).find("AddressKey").text());
+				console.groupEnd("findAddressKey");
+				return $(data).find("AddressKey").text();
+			}
 
 			/**
 			 * This function makes a GET request to the Personator API to get AddressKey
 			 * @param {Object} An object containing your options, e.g. User ID, Address components
 			 * @returns {string} AddressKey
+			 * @private
 			 */
-			verifyProperty = function(options) {
+			function verifyProperty(options) {
 				var params = parameters(options);
 
 				$.ajax({
 					cache: false,
+					dataType: "xml",
 					method: "GET",
 					url: urlVerify,
 					data: { 
@@ -97,21 +121,26 @@
 						//phone: "",
 						//ff: ""
 					},
-					success: processVerifyProperty
+					success: function(data) {
+						dataGlobal = data;
+						return options.callback(findAddressKey(dataGlobal));
+					}
 				});
 
-			},
+			}
 
 			/**
 			 * This function makes a GET request to the Property API to get property details
 			 * @param {Object} An object containing your options, e.g. User ID, AddressKey
 			 * @returns {Object} The details of the requested property
+			 * @private
 			 */
-			lookupProperty = function(options) {
+			function lookupProperty(options) {
 				var params = parameters(options);
 
 				$.ajax({
 					cache: false,
+					dataType: "xml",
 					method: "GET",
 					url: urlLookup,
 					data: { 
@@ -133,9 +162,11 @@
 						}
 					}
 				});
-			};
+			}
 
-		// Public
+		/**
+		 * @public
+		 */
 		return {
 			defaultOptions: {
 				// General Options - used by both the verify and lookup methods
